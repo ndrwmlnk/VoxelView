@@ -23,6 +23,7 @@ def transform_cloud(point_cloud, quaternion, cube_position=[0.0, 0.0, 0.0]):
 
 def find_scaling(cloud_transformed, voxel_range):
     max_dimension = max(list(map(lambda x: max(x), cloud_transformed)))
+    # print("find_scaling: return = ", voxel_range / max_dimension)
     return voxel_range / max_dimension
 
 
@@ -34,12 +35,11 @@ def normaliza(cube_points, voxel_range):
 
 def cloud2voxel(cloud, voxel_range, size=11):
     # convert to voxel grid
-    epsilon = 0.1
-    size05 = size / 2
+    size05 = np.floor(size / 2)
     voxels = np.zeros((size, size, size), dtype=np.uint8)
     pos_center = (size05, size05, size05)
     for pt in cloud:
-        i, j, k = np.floor((pt - epsilon) * size05 / voxel_range + pos_center)
+        i, j, k = np.floor(pt * size05 / voxel_range + pos_center)
         voxels[int(i)][int(j)][int(k)] = 1
     return voxels
 
@@ -47,9 +47,9 @@ def cloud2voxel(cloud, voxel_range, size=11):
 if __name__ == "__main__":
     voxelSpaceSize = 11
     voxelRange = 2.0
-    dimension = 0.025
+    dimension = 2.0
     cloud = generate_cloud(size=voxelSpaceSize, dimension=dimension)
-    numberOfShapes = 10  # 10000
+    numberOfShapes = 36  # 10000
     seedid = 0
 
     quaternions = []
@@ -59,7 +59,12 @@ if __name__ == "__main__":
 
     for i in range(numberOfShapes):
         quat = Quaternion.random()
-        if i == 0: quat = Quaternion()  # first quat = 1 + 0i + 0j + 0k
+
+        angles = np.linspace(0, 2, numberOfShapes)
+        quat = Quaternion(axis=[1, 1, 1], angle=np.pi * angles[i])
+        # if i == 0: quat = Quaternion(axis=[1, 1, 1], angle=np.pi / 4)
+        # if i == 0: quat = Quaternion()  # first quat = 1 + 0i + 0j + 0k
+
         if i % 100 == 0: print(strftime("%H%M%S", gmtime()), '\t', i, '\t', quat)
         cloud_transformed = normaliza(transform_cloud(cloud, quat), voxelRange)
         voxels = cloud2voxel(cloud_transformed, voxelRange, size=voxelSpaceSize)
