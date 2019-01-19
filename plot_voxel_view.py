@@ -6,14 +6,15 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # noqa: F401 unused import  # This import registers the 3D projection, but is otherwise unused.
 
-file = 'assets' + os.sep + 'voxel_shapes_len36_000000.pkl'
-trg = 'quat_sequence'  # ['quat_first_rotate', 'quat_sequence']
+file = 'assets' + os.sep + 'voxel_shapes_len36_095525.pkl'
+trg_plot_type = 'quat_sequence'  # ['quat_first_rotate', 'quat_sequence']
+trg_im_save = False
 with open(file, 'rb') as f:
     voxel_shapes = pickle.load(f)
 
 print('\n', 'matplotlib  >>  draw the first voxel_shape from:  ' + file,'\n')
 
-if trg == 'first_rotate':
+if trg_plot_type == 'first_rotate':
     quat = voxel_shapes['quaternions'][0]
     voxels = voxel_shapes['voxelShapes'][0]>0
     print('quat = ', quat, '\n')
@@ -31,7 +32,7 @@ if trg == 'first_rotate':
         plt.draw()
         plt.pause(.001)
 
-elif trg == 'quat_sequence':
+elif trg_plot_type == 'quat_sequence':
     fig = plt.figure(figsize=(8, 8), dpi=100)
     ax = fig.gca(projection='3d')
     for i in range(len(voxel_shapes['quaternions'])):
@@ -45,11 +46,11 @@ elif trg == 'quat_sequence':
         # ax.view_init(0, 181)
         plt.draw()
         plt.pause(.001)
-
-        im = Image.fromarray(np.array(np.array(fig.canvas.renderer._renderer), dtype=np.uint8))
-        if not os.path.exists('png'):
-            os.makedirs('png')
-        im.save('png' + os.sep + 'im' + str(i).zfill(4) + '.png')
+        if trg_im_save:
+            im = Image.fromarray(np.array(np.array(fig.canvas.renderer._renderer), dtype=np.uint8))
+            if not os.path.exists('png'):
+                os.makedirs('png')
+            im.save('png' + os.sep + 'im' + str(i).zfill(4) + '.png')
 
 plt.pause(60)
 print('EXIT')
