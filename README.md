@@ -1,7 +1,12 @@
 # VoxelView
 The function performs rotation of a voxelized representation in accordance with a given quaternion.
 
-![quat_111.mp4](https://raw.githubusercontent.com/ndrwmlnk/VoxelView/master/assets/quat_111.gif)
+<!--![quat_111.mp4](https://raw.githubusercontent.com/ndrwmlnk/VoxelView/master/assets/quat_111.gif)-->
+assets/voxel_shapes_len36_000000.pkl
+![](assets/quat_111.gif) 
+
+assets/voxel_shapes_len343_ss16_cs10_q0_shift3px.pgz
+![](assets/voxel_shapes_len343_ss16_cs10_q0_shift3px.gif)
 
 # Read '*.pgz' files:
 
