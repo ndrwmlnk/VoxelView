@@ -2,10 +2,11 @@
 The function performs rotation of a voxelized representation in accordance with a given quaternion.
 
 <!--![quat_111.mp4](https://raw.githubusercontent.com/ndrwmlnk/VoxelView/master/assets/quat_111.gif)-->
-![](assets/quat_111.gif) 
+![](assets/quat_111.gif)\
 Fig. 1: assets/voxel_shapes_len36_000000.pkl
 
-![](assets/voxel_shapes_len343_ss16_cs10_q0_shift3px.gif)
+\
+![](assets/voxel_shapes_len343_ss16_cs10_q0_shift3px.gif)\
 Fig. 2: assets/voxel_shapes_len343_ss16_cs10_q0_shift3px.pgz
 
 # Read '*.pgz' files:
