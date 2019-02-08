@@ -252,6 +252,11 @@ if __name__ == "__main__":
         voxel_training_data['cube']['len'] = len(voxel_training_data['cube']['voxel'])
         print('len', "['cube']['voxel']", len(voxel_training_data['cube']['voxel']))
 
+        save_name = 'assets' + os.sep + 'voxel_cube_sphere_pen' + '_' + strftime("%H%M%S", gmtime()) + '.pgz'
+        print('>>>  saving data  >>>  ',save_name)
+        with gzip.GzipFile(save_name, 'w') as f:
+            pickle.dump({'voxel_training_data': voxel_training_data, 'voxelSpaceSize': voxelSpaceSize, 'seedid': seedid}, f)
+
         for shapeSize in [8, 9, 10, 11, 12, 13, 14, 15, 16]:
             dimension = voxelRange * shapeSize / voxelSpaceSize
             cloud = generate_cloud_sphere(size=voxelSpaceSize, dimension=dimension)
@@ -278,6 +283,11 @@ if __name__ == "__main__":
         voxel_training_data['sphere']['len'] = len(voxel_training_data['sphere']['voxel'])
         print('len', "['sphere']['voxel']", len(voxel_training_data['sphere']['voxel']))
 
+        save_name = 'assets' + os.sep + 'voxel_cube_sphere_pen' + '_' + strftime("%H%M%S", gmtime()) + '.pgz'
+        print('>>>  saving data  >>>  ',save_name)
+        with gzip.GzipFile(save_name, 'w') as f:
+            pickle.dump({'voxel_training_data': voxel_training_data, 'voxelSpaceSize': voxelSpaceSize, 'seedid': seedid}, f)
+
         for shapeSize in [8, 9, 10, 11, 12, 13, 14, 15, 16]:
             dimension = voxelRange * shapeSize / voxelSpaceSize
             cloud = generate_cloud_pen(size=voxelSpaceSize, dimension=dimension)
@@ -296,10 +306,11 @@ if __name__ == "__main__":
         voxel_training_data['pen']['len'] = len(voxel_training_data['pen']['voxel'])
         print('len', "['pen']['voxel']", len(voxel_training_data['pen']['voxel']))
 
-        with gzip.GzipFile('assets' + os.sep + 'voxel_cube_sphere_pen' + '_' + strftime("%H%M%S", gmtime()) + '.pgz', 'w') as f:
+        save_name = 'assets' + os.sep + 'voxel_cube_sphere_pen' + '_' + strftime("%H%M%S", gmtime()) + '.pgz'
+        print('>>>  saving data  >>>  ',save_name)
+        with gzip.GzipFile(save_name, 'w') as f:
             pickle.dump({'voxel_training_data': voxel_training_data, 'voxelSpaceSize': voxelSpaceSize, 'seedid': seedid}, f)
 
-    # TODO run on feb
-    # TODO write 16/64 shift function
+    # TODO 16/64 shift function
 
     print('DONE')
