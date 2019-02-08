@@ -210,20 +210,8 @@ if __name__ == "__main__":
     elif trg_gen_type == 'generate_vae_training_data':
         voxel_training_data = dict()
         voxel_training_data['cube'] = {}
-        voxel_training_data['cube']['size'] = []
-        voxel_training_data['cube']['quat'] = []
-        # voxel_training_data['cube']['cloud'] = []
-        voxel_training_data['cube']['voxel'] = []
         voxel_training_data['pen'] = {}
-        voxel_training_data['pen']['size'] = []
-        voxel_training_data['pen']['quat'] = []
-        # voxel_training_data['pen']['cloud'] = []
-        voxel_training_data['pen']['voxel'] = []
         voxel_training_data['sphere'] = {}
-        voxel_training_data['sphere']['size'] = []
-        voxel_training_data['sphere']['quat'] = []
-        # voxel_training_data['sphere']['cloud'] = []
-        voxel_training_data['sphere']['voxel'] = []
 
         # rotation of the points initialized in the 3D-voxel-cube may bring some of these points (e.g. vertices) outside of the 3D-voxel-cube
         # to ensure all points are in the 3D-voxel-cube after a rotation, either set trg_normalize_cloud_size = True or set the ratio dimension/dimension <= ~0.6
@@ -233,8 +221,14 @@ if __name__ == "__main__":
         range_quat_cube = 30  #* 1000
         range_quat_pen = 10  #*1000
 
-        # voxel_training_data['pen']['voxel'][-1]
+
+        l = 0
         for shapeSize in [8, 9, 10, 11]:
+            if shapeSize not in voxel_training_data['cube'].keys():
+                voxel_training_data['cube'][shapeSize] = {}
+                voxel_training_data['cube'][shapeSize]['quat'] = []
+                voxel_training_data['cube'][shapeSize]['voxel'] = []
+                # voxel_training_data['cube']['cloud'] = []
             dimension = voxelRange * shapeSize / voxelSpaceSize
             cloud = generate_cloud_cube(size=voxelSpaceSize, dimension=dimension)
             for i in range(range_quat_cube):
@@ -245,19 +239,26 @@ if __name__ == "__main__":
                 cloud_transformed = transform_cloud(cloud, quat)
                 voxels = cloud2voxel(cloud_transformed, voxelRange, size=voxelSpaceSize)
                 if voxels is not None:
-                    voxel_training_data['cube']['size'].append(shapeSize)
-                    voxel_training_data['cube']['quat'].append(quat)
-                    # voxel_training_data['cube']['cloud_transformed'].append(cloud_transformed)
-                    voxel_training_data['cube']['voxel'].append(voxels)
-        voxel_training_data['cube']['len'] = len(voxel_training_data['cube']['voxel'])
-        print('len', "['cube']['voxel']", len(voxel_training_data['cube']['voxel']))
+                    voxel_training_data['cube'][shapeSize]['quat'].append(quat)
+                    voxel_training_data['cube'][shapeSize]['voxel'].append(voxels)
+                    # voxel_training_data['cube'][shapeSize]['cloud_transformed'].append(cloud_transformed)
+                    l += 1
+        voxel_training_data['cube']['_len'] = l
+        print(l, ' cube voxels generated')
 
-        save_name = 'assets' + os.sep + 'voxel_cube_sphere_pen' + '_' + strftime("%H%M%S", gmtime()) + '.pgz'
+        save_name = 'assets' + os.sep + 'voxel_cube_' + strftime("%H%M%S", gmtime()) + '.pgz'
         print('>>>  saving data  >>>  ',save_name)
         with gzip.GzipFile(save_name, 'w') as f:
             pickle.dump({'voxel_training_data': voxel_training_data, 'voxelSpaceSize': voxelSpaceSize, 'seedid': seedid}, f)
 
+
+        l = 0
         for shapeSize in [8, 9, 10, 11, 12, 13, 14, 15, 16]:
+            if shapeSize not in voxel_training_data['sphere'].keys():
+                voxel_training_data['sphere'][shapeSize] = {}
+                voxel_training_data['sphere'][shapeSize]['quat'] = []
+                voxel_training_data['sphere'][shapeSize]['voxel'] = []
+                # voxel_training_data['cube']['cloud'] = []
             dimension = voxelRange * shapeSize / voxelSpaceSize
             cloud = generate_cloud_sphere(size=voxelSpaceSize, dimension=dimension)
 
@@ -275,20 +276,26 @@ if __name__ == "__main__":
             # plt.show()
 
             voxels = cloud2voxel(cloud_transformed, voxelRange, size=voxelSpaceSize)
+            voxel_training_data['sphere'][shapeSize]['quat'].append(quat)
+            voxel_training_data['sphere'][shapeSize]['voxel'].append(voxels)
+            # voxel_training_data['sphere'][shapeSize]['cloud_transformed'].append(cloud_transformed)
+            l += 1
+        voxel_training_data['sphere']['_len'] = l
+        print(l, ' sphere voxels generated')
 
-            voxel_training_data['sphere']['size'].append(shapeSize)
-            voxel_training_data['sphere']['quat'].append(quat)
-            # voxel_training_data['sphere']['cloud_transformed'].append(cloud_transformed)
-            voxel_training_data['sphere']['voxel'].append(voxels)
-        voxel_training_data['sphere']['len'] = len(voxel_training_data['sphere']['voxel'])
-        print('len', "['sphere']['voxel']", len(voxel_training_data['sphere']['voxel']))
-
-        save_name = 'assets' + os.sep + 'voxel_cube_sphere_pen' + '_' + strftime("%H%M%S", gmtime()) + '.pgz'
+        save_name = 'assets' + os.sep + 'voxel_cube_sphere_' + strftime("%H%M%S", gmtime()) + '.pgz'
         print('>>>  saving data  >>>  ',save_name)
         with gzip.GzipFile(save_name, 'w') as f:
             pickle.dump({'voxel_training_data': voxel_training_data, 'voxelSpaceSize': voxelSpaceSize, 'seedid': seedid}, f)
 
+
+        l = 0
         for shapeSize in [8, 9, 10, 11, 12, 13, 14, 15, 16]:
+            if shapeSize not in voxel_training_data['pen'].keys():
+                voxel_training_data['pen'][shapeSize] = {}
+                voxel_training_data['pen'][shapeSize]['quat'] = []
+                voxel_training_data['pen'][shapeSize]['voxel'] = []
+                # voxel_training_data['pen']['cloud'] = []
             dimension = voxelRange * shapeSize / voxelSpaceSize
             cloud = generate_cloud_pen(size=voxelSpaceSize, dimension=dimension)
             for i in range(range_quat_pen):
@@ -299,18 +306,16 @@ if __name__ == "__main__":
                 cloud_transformed = transform_cloud(cloud, quat)
                 voxels = cloud2voxel(cloud_transformed, voxelRange, size=voxelSpaceSize)
                 if voxels is not None:
-                    voxel_training_data['pen']['size'].append(shapeSize)
-                    voxel_training_data['pen']['quat'].append(quat)
-                    # voxel_training_data['pen']['cloud_transformed'].append(cloud_transformed)
-                    voxel_training_data['pen']['voxel'].append(voxels)
-        voxel_training_data['pen']['len'] = len(voxel_training_data['pen']['voxel'])
-        print('len', "['pen']['voxel']", len(voxel_training_data['pen']['voxel']))
+                    voxel_training_data['pen'][shapeSize]['quat'].append(quat)
+                    voxel_training_data['pen'][shapeSize]['voxel'].append(voxels)
+                    # voxel_training_data['pen'][shapeSize]['cloud_transformed'].append(cloud_transformed)
+                    l += 1
+        voxel_training_data['pen']['_len'] = l
+        print(l, ' pen voxels generated')
 
-        save_name = 'assets' + os.sep + 'voxel_cube_sphere_pen' + '_' + strftime("%H%M%S", gmtime()) + '.pgz'
+        save_name = 'assets' + os.sep + 'voxel_cube_sphere_pen_' + strftime("%H%M%S", gmtime()) + '.pgz'
         print('>>>  saving data  >>>  ',save_name)
         with gzip.GzipFile(save_name, 'w') as f:
             pickle.dump({'voxel_training_data': voxel_training_data, 'voxelSpaceSize': voxelSpaceSize, 'seedid': seedid}, f)
-
-    # TODO 16/64 shift function
 
     print('DONE')
